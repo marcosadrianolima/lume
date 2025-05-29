@@ -7,12 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Coloque isso dentro do <head> do seu HTML -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'></path></svg>" type="image/svg+xml">
-
-    <!-- Fallback para navegadores que não suportam SVG -->
-    <link rel="alternate icon" href="/favicon.ico" type="image/x-icon">
-
     <style>
         :root {
             --primary: #3b82f6;
@@ -54,6 +48,7 @@
             z-index: 100;
             backdrop-filter: blur(8px);
             background-color: rgba(255,255,255,0.9);
+            height: 70px;
         }
         
         nav {
@@ -70,6 +65,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
         
         .logo-icon {
@@ -79,6 +75,45 @@
         .logo span {
             color: var(--dark);
             font-weight: 600;
+        }
+        
+        /* Menu Desktop */
+        .desktop-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .desktop-menu a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+            font-size: 15px;
+        }
+
+        .desktop-menu > .cta-button{
+            color: var(--light)!important;
+        }
+        
+        .desktop-menu a:hover {
+            color: var(--primary);
+        }
+        
+        .desktop-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .desktop-menu a:hover::after {
+            width: 100%;
         }
         
         .cta-button {
@@ -109,6 +144,7 @@
             color: var(--dark);
             font-size: 24px;
             cursor: pointer;
+            z-index: 101;
         }
         
         /* Hero Section */
@@ -502,19 +538,20 @@
         .mobile-menu {
             display: none;
             position: fixed;
-            top: 80px;
+            top: 70px; /* Ajuste conforme a altura do seu header */
             left: 0;
             width: 100%;
             background-color: white;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
             padding: 20px;
-            z-index: 99;
-            transform: translateY(-150%);
-            transition: transform 0.3s ease;
+            z-index: 100;
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
         }
         
         .mobile-menu.active {
-            transform: translateY(0);
+            display: block;
+            animation: slideDown 0.3s ease forwards;
         }
         
         .mobile-menu a {
@@ -529,11 +566,26 @@
         .mobile-menu a:last-child {
             border-bottom: none;
         }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         
         /* Responsive Adjustments */
         @media (max-width: 1024px) {
             .about-content {
                 gap: 40px;
+            }
+            
+            .desktop-menu {
+                gap: 20px;
             }
         }
         
@@ -542,13 +594,14 @@
                 display: block;
             }
             
-            .desktop-cta {
+            .desktop-menu {
                 display: none;
             }
             
             .mobile-menu .cta-button {
                 display: inline-block;
                 margin-top: 10px;
+                text-align: center;
             }
             
             .about-content {
@@ -597,15 +650,25 @@
     <header>
         <div class="container">
             <nav>
-                <div class="logo">
+                <a href="#home" class="logo">
                     <div class="logo-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg>
                     </div>
                     Lume<span>Consultoria</span>
+                </a>
+                
+                <!-- Menu Desktop -->
+                <div class="desktop-menu">
+                    <a href="#home">Início</a>
+                    <a href="#about">Sobre Nós</a>
+                    <a href="#market">O Mercado</a>
+                    <a href="#services">Serviços</a>
+                    <a href="#contact">Contato</a>
+                    <a href="#contact" class="cta-button">Agende uma Consulta</a>
                 </div>
-                <a href="#contact" class="cta-button desktop-cta">Agende uma Consulta</a>
+                
                 <button class="menu-toggle" id="menuToggle">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -619,11 +682,12 @@
         <!-- Mobile Menu -->
         <div class="mobile-menu" id="mobileMenu">
             <div class="container">
+                <a href="#home">Início</a>
                 <a href="#about">Sobre Nós</a>
                 <a href="#market">O Mercado</a>
-                <a href="#services">Nossos Serviços</a>
+                <a href="#services">Serviços</a>
                 <a href="#contact">Contato</a>
-                <a href="#contact" class="cta-button">Agende uma Consulta</a>
+                <a href="#contact">Agende uma Consulta</a>
             </div>
         </div>
     </header>
@@ -714,7 +778,7 @@
     <!-- Services Section -->
     <section class="section" id="services">
         <div class="container">
-            <h2 class="section-title">Nossa Atuação</h2>
+            <h2 class="section-title">Nossos Serviços</h2>
             <p class="services-intro">Oferecemos consultoria especializada para integrar IA Generativa no seu fluxo de desenvolvimento, trazendo clareza e resultados mensuráveis.</p>
             
             <div class="services-grid">
@@ -769,7 +833,7 @@
         <div class="container cta-content">
             <h2>Pronto para trazer clareza na adoção de IA Generativa?</h2>
             <p>Agende uma consultoria inicial gratuita para entender como podemos iluminar o caminho da IA Generativa para sua empresa.</p>
-            <a target="_blank" href="https://forms.gle/cqhssTnvVevCyY8VA" class="cta-button light">Agendar Consultoria Gratuita</a>
+            <a href="https://docs.google.com/forms/d/e/your-form-id/viewform" class="cta-button light">Agendar Consultoria Gratuita</a>
         </div>
     </section>
 
@@ -782,8 +846,9 @@
                     <p>Trazer clareza e consciência na adoção de IA Generativa para empresas com equipes de desenvolvimento.</p>
                 </div>
                 <div class="footer-column">
-                    <h3>Links Rápidos</h3>
+                    <h3>Navegação</h3>
                     <ul>
+                        <li><a href="#home">Início</a></li>
                         <li><a href="#about">Sobre Nós</a></li>
                         <li><a href="#market">O Mercado</a></li>
                         <li><a href="#services">Nossos Serviços</a></li>
@@ -808,7 +873,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Lume Consultoria. Todos os direitos reservados.</p>
+                <p>&copy; 2023 Lume Consultoria. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -817,12 +882,16 @@
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menuToggle');
         const mobileMenu = document.getElementById('mobileMenu');
-        
+        let menuOpen = false;
+
         menuToggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            
+            // Alternar menu
             mobileMenu.classList.toggle('active');
             
-            // Toggle icon between menu and close
-            if (mobileMenu.classList.contains('active')) {
+            // Alternar ícone
+            if (menuOpen) {
                 menuToggle.innerHTML = `
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -839,12 +908,13 @@
                 `;
             }
         });
-        
-        // Close menu when clicking on a link
+
+        // Fechar menu ao clicar nos links
         const mobileLinks = document.querySelectorAll('.mobile-menu a');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.remove('active');
+                menuOpen = false;
                 menuToggle.innerHTML = `
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -852,24 +922,6 @@
                         <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
                 `;
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
             });
         });
     </script>
